@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PopAI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #343541;
+            color: #d1d5db;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .header {
+            background-color: #202123;
+            padding: 10px;
+            text-align: center;
+            font-weight: 500;
+            color: #ffffff;
+            font-size: 20px;
+        }
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .message {
+            max-width: 70%;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .user-message {
+            background-color: #3c3f41;
+            align-self: flex-end;
+        }
+        .bot-message {
+            background-color: #444654;
+            align-self: flex-start;
+        }
+        .input-container {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #202123;
+        }
+        .chat-input {
+            flex: 1;
+            padding: 10px;
+            background-color: #40414f;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+        }
+        .send-button {
+            background-color: #10a37f;
+            border: none;
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .send-button:hover {
+            background-color: #0e8a6b;
+        }
+    </style>
+</head>
+<body>
+    <div class="header" style="white-space: pre;">
+  ____               _    ___ 
+ |  _ \ ___  _ __   / \  |_ _|
+ | |_) / _ \| '_ \ / _ \  | | 
+ |  __/ (_) | |_) / ___ \ | | 
+ |_|   \___/| .__/_/   \_\___|
+            |_|               
+</div>
+    <div class="chat-container" id="chat-container">
+    <div style="margin-bottom: 10px; font-style: italic; color: #a1a1aa;">Recommended: <button onclick="generateImage()" style="background-color: #10a37f; border: none; color: #ffffff; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Generate Image</button></div>
+        <!-- Chat messages will be dynamically inserted here -->
+    </div>
+    <div class="input-container">
+        <input type="text" class="chat-input" id="chat-input" placeholder="Send a message...">
+        <button class="send-button" id="send-button">Send</button>
+    </div>
+
+    <script>
+        const chatContainer = document.getElementById('chat-container');
+        const chatInput = document.getElementById('chat-input');
+        const sendButton = document.getElementById('send-button');
+
+        function appendMessage(content, type) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', type);
+            chatContainer.appendChild(messageElement);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            if (type === 'bot-message') {
+                let index = 0;
+                function typeWriter() {
+                    if (index < content.length) {
+                        messageElement.textContent += content.charAt(index);
+                        index++;
+                        setTimeout(typeWriter, 25);
+                    }
+                }
+                typeWriter();
+            } else {
+                messageElement.textContent = content;
+            }
+        }
+
+        sendButton.addEventListener('click', () => {
+            const userInput = chatInput.value.trim();
+            if (userInput) {
+                appendMessage(userInput, 'user-message');
+                chatInput.value = '';
+                setTimeout(() => {
+                const responses = ['pop', 'lfg', 'degen', 'moon', 'sendorski', 'meta', 'winter arc', 'retardio', 'conviction', 'buy high sell low', 'mitch'];
+                const randomResponse = Array.from({length: Math.floor(Math.random() * 20) + 1}, () => responses[Math.floor(Math.random() * responses.length)]).join(' ');
+                    appendMessage(randomResponse, 'bot-message');
+                    
+                }, 1000);
+            }
+        });
+
+        chatInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                sendButton.click();
+            }
+        });
+    function generateImage() {
+            appendMessage('Generating image...', 'bot-message');
+            setTimeout(() => {
+                const images = [
+                    'https://cdn.discordapp.com/attachments/874202022528811062/1297537092485775392/55d6287717d39436.png?ex=67164915&is=6714f795&hm=f3a4940c7fd02e001e38a24c104589c6ba51c61207626609c2a368bfb0759ed9',
+                    'https://cdn.discordapp.com/attachments/874202022528811062/1297538863144894584/1_qGgA0ucCPoDFatdF6zzLug.jpg?ex=67164abc&is=6714f93c&hm=5e19349b66a969d5170fc2f4a8dfab6a16f29bfd6d92b895297c73708925d143'
+                ];
+                const imgElement = document.createElement('img');
+                imgElement.src = images[Math.floor(Math.random() * images.length)];
+                imgElement.style.maxWidth = '100%';
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message', 'bot-message');
+                messageElement.appendChild(imgElement);
+                chatContainer.appendChild(messageElement);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
